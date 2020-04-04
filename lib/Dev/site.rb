@@ -1,4 +1,9 @@
-class Dev::Web
-    attr_accessor :title, :content, :article_url
+# class Dev::Articles2
+#     attr_accessor :title, :content, :article_url, :site
 
-end
+#   def print_content
+#     puts self.content
+#     puts ""
+#   end
+
+# end

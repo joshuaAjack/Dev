@@ -1,47 +1,41 @@
 class Dev::CLI
-    
+     
     def call 
         system("clear")
-      puts "\nWelcome To Dev where you'll find daily tech news."
-      puts 'Type "list" to see a list of the latest news or "exit" to leave'
-      Dev::Article.create_from_hash
-      menu 
-    #   menu is where they will be able to type list and where I will then define how to choose each article
-     end
-     
-     def menu
+        list
+        menu
+    end
+
+    def list
+        puts "\nMOST POPULAR FLOWER TYPES."
+        @flowers = Dev::Article.scrape_flowers
+        @flowers.each_with_index do |flower, i|
+          puts "#{i +1}. #{flower.name}"
+        end
+      end
+    
+      def menu
         input = nil
         while input != "exit"
-        input = gets.strip
-
-        case input
-        when "list"
-         puts ""
-            list_sites
-         puts ""
-         input = gets.strip
-
-         puts "\nSelect an article to read its content."
-         
-         if input.to_i.between?(1,4)
-         scraper.scrape_site_headlines(sites[input.to_i-1])
-         puts ""
-         sites[input.to_i-1].post_list
-          end
-         when "exit"
-            exit
-        end
-    end
-end
+          puts "Enter a number to see more information on the flower or type list or type exit."
+          input = gets.strip.downcase
     
-    def list_sites
-        Dev::Article.all.each_with_index do |site, index|
-            puts "#{index+1}. #{site.site_name}"
+          if input.to_i > 0
+            the_flower = @flowers[input.to_i-1]
+            puts "#{the_flower.name} --- #{the_flower.description}}"
+          elsif input == "list"
+            list
+          else
+            puts "ERROR type list or type exit"
+          end
         end
+      end
+    
+      def goodbye
+        system("clear")
+        if "exit"
+            exit
+      puts "Thank you for your time!"
+      end
+     end
     end
-
-    def sites 
-        sites = Dev::Article.all
-    end
-end
-  

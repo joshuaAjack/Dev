@@ -1,31 +1,29 @@
-class Dev::Article
-     
-    attr_accessor :site_name, :site_url, :articles
+class Dev::Article 
 
-    SITES = {  "TWN" => "https://thenextweb.com/section/tech/"
+    attr_accessor :name, :description 
 
-    }
+    # def initialize 
+    #     @name = name 
+    #     @description = description
+    # end
 
-    @@all = []
+    # def self.data 
+    #     self.scrape_data
+    # end
 
-    def initialize(site_name,site_url)
-        @site_name = site_name
-        @site_url = site_url
-        @articles = []
-        @@all << self
-    end
+    # def self.scrape_data
+    #     flowers = []
+         
+    #     flowers << self.scrape_flowers
+    # end
 
-    def self.all
-        @@all
-    end
-
-    def self.create_from_hash
-        SITES.each do |site, url|
-            self.new(site, url)
+    def self.scrape_flowers
+        doc = Nokogiri::HTML(open("https://www.1800flowers.com/blog/flower-facts/flower-types"))
+        doc.search("div.post-entry").each do |doc|
+            flower = Dev::Article.new
+        flower.name = doc.css("h2").text.gsub("More Flower Types:", "")
+        flower.description = doc.css("p").text
+        flower
         end
     end
-
-        def add_article(article)
-            self.articles << article
-        end
-    end
+end
